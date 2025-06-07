@@ -226,29 +226,29 @@
         <div class="language-selector">
             <select id="languageSelect" onchange="changeLanguage()">
                 <option value="en">English</option>
-                <option value="pt">Portugu锚s</option>
-                <option value="es">Espa帽ol</option>
+                <option value="pt">Português</option>
+                <option value="es">Español</option>
             </select>
         </div>
 
         <div class="logo">
-            <img src="image.png" alt="Uktena Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'background: linear-gradient(135deg, #8b5cf6, #a855f7); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;\'>馃悕</div>'">
+            <img src="image.png" alt="Uktena Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'background: linear-gradient(135deg, #8b5cf6, #a855f7); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;\'>🐍</div>'">
         </div>
 
-        <h1 id="title">Uktena</h1>
+        <h1 id="title" style="display: none;">Uktena</h1>
         <p class="subtitle" id="subtitle">Access your account</p>
 
         <div id="loginContainer">
             <div class="form-group">
                 <label for="email" id="emailLabel">Email</label>
                 <input type="email" id="email" required>
-                <div class="error-message" id="emailError">Este campo 茅 obrigat贸rio</div>
+                <div class="error-message" id="emailError">Este campo é obrigatório</div>
             </div>
 
             <div class="form-group">
                 <label for="password" id="passwordLabel">Password</label>
                 <input type="password" id="password" required>
-                <div class="error-message" id="passwordError">Este campo 茅 obrigat贸rio</div>
+                <div class="error-message" id="passwordError">Este campo é obrigatório</div>
             </div>
 
             <button type="button" class="btn" id="loginBtn" onclick="handleLogin(); return false;">Sign In</button>
@@ -263,12 +263,12 @@
         const translations = {
             pt: {
                 title: "Uktena",
-                subtitle: "Aceda 脿 sua conta",
+                subtitle: "Aceda à sua conta",
                 emailLabel: "Email",
                 passwordLabel: "Palavra-passe",
                 loginBtn: "Entrar",
-                requiredField: "Este campo 茅 obrigat贸rio",
-                invalidEmail: "Por favor, insira um email v谩lido"
+                requiredField: "Este campo é obrigatório",
+                invalidEmail: "Por favor, insira um email válido"
             },
             en: {
                 title: "Uktena",
@@ -282,11 +282,11 @@
             es: {
                 title: "Uktena",
                 subtitle: "Accede a tu cuenta",
-                emailLabel: "Correo electr贸nico",
-                passwordLabel: "Contrase帽a",
-                loginBtn: "Iniciar sesi贸n",
+                emailLabel: "Correo electrónico",
+                passwordLabel: "Contraseña",
+                loginBtn: "Iniciar sesión",
                 requiredField: "Este campo es obligatorio",
-                invalidEmail: "Por favor, introduzca una direcci贸n de correo v谩lida"
+                invalidEmail: "Por favor, introduzca una dirección de correo válida"
             }
         };
 
@@ -298,14 +298,18 @@
                 es: ['Q3VlbnRhIGJsb3F1ZWFkYS4gUMOzbmdhc2UgZW4gY29udGFjdG8gY29uIG51ZXN0cm8gc29wb3J0ZSBlbiA=', 'aGVscEB1a3RlbmEuYWk=']
             };
             const [msg, email] = msgs[lang];
-            return atob(msg) + '<a href="mailto:' + atob(email) + '" class="support-link">' + atob(email) + '</a>';
+            
+            // Proper UTF-8 decoding for special characters
+            const decodedMsg = decodeURIComponent(escape(atob(msg)));
+            const decodedEmail = atob(email);
+            
+            return decodedMsg + '<a href="mailto:' + decodedEmail + '" class="support-link">' + decodedEmail + '</a>';
         }
 
         function changeLanguage() {
             const language = document.getElementById('languageSelect').value;
             const trans = translations[language];
             
-            document.getElementById('title').textContent = trans.title;
             document.getElementById('subtitle').textContent = trans.subtitle;
             document.getElementById('emailLabel').textContent = trans.emailLabel;
             document.getElementById('passwordLabel').textContent = trans.passwordLabel;
