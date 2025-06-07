@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+    <title>Uktena - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #e6e2ff 0%, #f0edff 50%, #e8e4ff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #8b5cf6, #a855f7);
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 16px;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #4a5568;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: 4px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .alert {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 20px;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .support-link {
+            color: #8b5cf6;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .support-link:hover {
+            color: #a855f7;
+        }
+
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            padding: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .language-selector select {
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            font-weight: 500;
+            color: #4a5568;
+            cursor: pointer;
+        }
+
+        .language-selector select:focus {
+            outline: none;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .language-selector {
+                position: static;
+                margin-bottom: 20px;
+                width: fit-content;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="language-selector">
+            <select id="languageSelect" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="pt">Portugu锚s</option>
+                <option value="es">Espa帽ol</option>
+            </select>
+        </div>
+
+        <div class="logo">
+            <img src="image.png" alt="Uktena Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\'background: linear-gradient(135deg, #8b5cf6, #a855f7); width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 24px;\'>馃悕</div>'">
+        </div>
+
+        <h1 id="title">Uktena</h1>
+        <p class="subtitle" id="subtitle">Access your account</p>
+
+        <div id="loginContainer">
+            <div class="form-group">
+                <label for="email" id="emailLabel">Email</label>
+                <input type="email" id="email" required>
+                <div class="error-message" id="emailError">Este campo 茅 obrigat贸rio</div>
+            </div>
+
+            <div class="form-group">
+                <label for="password" id="passwordLabel">Password</label>
+                <input type="password" id="password" required>
+                <div class="error-message" id="passwordError">Este campo 茅 obrigat贸rio</div>
+            </div>
+
+            <button type="button" class="btn" id="loginBtn" onclick="handleLogin(); return false;">Sign In</button>
+        </div>
+
+        <div class="alert" id="alert">
+            <div id="alertMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            pt: {
+                title: "Uktena",
+                subtitle: "Aceda 脿 sua conta",
+                emailLabel: "Email",
+                passwordLabel: "Palavra-passe",
+                loginBtn: "Entrar",
+                requiredField: "Este campo 茅 obrigat贸rio",
+                invalidEmail: "Por favor, insira um email v谩lido"
+            },
+            en: {
+                title: "Uktena",
+                subtitle: "Access your account",
+                emailLabel: "Email",
+                passwordLabel: "Password",
+                loginBtn: "Sign In",
+                requiredField: "This field is required",
+                invalidEmail: "Please enter a valid email address"
+            },
+            es: {
+                title: "Uktena",
+                subtitle: "Accede a tu cuenta",
+                emailLabel: "Correo electr贸nico",
+                passwordLabel: "Contrase帽a",
+                loginBtn: "Iniciar sesi贸n",
+                requiredField: "Este campo es obligatorio",
+                invalidEmail: "Por favor, introduzca una direcci贸n de correo v谩lida"
+            }
+        };
+
+        // Obfuscated message generation
+        function getStatusMessage(lang) {
+            const msgs = {
+                pt: ['Q29udGEgYmxvcXVlYWRhLiBFbnRyZSBlbSBjb250YWN0byBjb20gbyBub3NzbyBzdXBvcnRlIGVtIA==', 'aGVscEB1a3RlbmEuYWk='],
+                en: ['QWNjb3VudCBibG9ja2VkLiBQbGVhc2UgY29udGFjdCBvdXIgc3VwcG9ydCBhdCA=', 'aGVscEB1a3RlbmEuYWk='],
+                es: ['Q3VlbnRhIGJsb3F1ZWFkYS4gUMOzbmdhc2UgZW4gY29udGFjdG8gY29uIG51ZXN0cm8gc29wb3J0ZSBlbiA=', 'aGVscEB1a3RlbmEuYWk=']
+            };
+            const [msg, email] = msgs[lang];
+            return atob(msg) + '<a href="mailto:' + atob(email) + '" class="support-link">' + atob(email) + '</a>';
+        }
+
+        function changeLanguage() {
+            const language = document.getElementById('languageSelect').value;
+            const trans = translations[language];
+            
+            document.getElementById('title').textContent = trans.title;
+            document.getElementById('subtitle').textContent = trans.subtitle;
+            document.getElementById('emailLabel').textContent = trans.emailLabel;
+            document.getElementById('passwordLabel').textContent = trans.passwordLabel;
+            document.getElementById('loginBtn').textContent = trans.loginBtn;
+            
+            // Update error messages if they're visible
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            
+            if (emailError.classList.contains('show')) {
+                emailError.textContent = trans.requiredField;
+            }
+            
+            if (passwordError.classList.contains('show')) {
+                passwordError.textContent = trans.requiredField;
+            }
+            
+            // Update HTML lang attribute
+            document.documentElement.lang = language;
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Simulated authentication check
+        async function checkCredentials(email, password) {
+            // Add artificial delay to simulate server request
+            await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 500));
+            
+            // Always return blocked status (but obfuscated)
+            return { status: 'blocked', timestamp: Date.now() };
+        }
+
+        async function handleLogin() {
+            console.log("Authenticating user...");
+            
+            // Get current language
+            const currentLang = document.getElementById('languageSelect').value;
+            const trans = translations[currentLang];
+            
+            // Get form elements
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            const alert = document.getElementById('alert');
+            const alertMessage = document.getElementById('alertMessage');
+            
+            // Get values
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            
+            // Hide alert and reset errors
+            alert.classList.remove('show');
+            emailError.classList.remove('show');
+            passwordError.classList.remove('show');
+            
+            // Reset field styles
+            emailInput.style.borderColor = '';
+            emailInput.style.boxShadow = '';
+            passwordInput.style.borderColor = '';
+            passwordInput.style.boxShadow = '';
+            
+            let hasErrors = false;
+            
+            // Check email
+            if (!email) {
+                console.log("Email validation failed");
+                emailError.textContent = trans.requiredField;
+                emailError.classList.add('show');
+                emailInput.style.borderColor = '#ef4444';
+                emailInput.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.1)';
+                hasErrors = true;
+            } else if (!isValidEmail(email)) {
+                console.log("Email format validation failed");
+                emailError.textContent = trans.invalidEmail;
+                emailError.classList.add('show');
+                emailInput.style.borderColor = '#ef4444';
+                emailInput.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.1)';
+                hasErrors = true;
+            }
+            
+            // Check password
+            if (!password) {
+                console.log("Password validation failed");
+                passwordError.textContent = trans.requiredField;
+                passwordError.classList.add('show');
+                passwordInput.style.borderColor = '#ef4444';
+                passwordInput.style.boxShadow = '0 0 0 3px rgba(239, 68, 68, 0.1)';
+                hasErrors = true;
+            }
+            
+            // Process authentication if no validation errors
+            if (!hasErrors) {
+                console.log("Validating credentials with server...");
+                
+                try {
+                    const result = await checkCredentials(email, password);
+                    console.log("Server response received");
+                    
+                    if (result.status === 'blocked') {
+                        console.log("Account access restricted");
+                        alertMessage.innerHTML = getStatusMessage(currentLang);
+                        alert.classList.add('show');
+                    }
+                    
+                } catch (error) {
+                    console.log("Authentication service error");
+                    alertMessage.innerHTML = getStatusMessage(currentLang);
+                    alert.classList.add('show');
+                }
+            }
+            
+            return false;
+        }
+
+        // Initialize with browser language detection
+        document.addEventListener('DOMContentLoaded', function() {
+            // Detect browser language
+            const browserLang = navigator.language || navigator.userLanguage;
+            const langCode = browserLang.toLowerCase();
+            
+            let selectedLang = 'en'; // Default to English
+            
+            // Check if browser language matches our supported languages
+            if (langCode.startsWith('pt')) {
+                selectedLang = 'pt';
+            } else if (langCode.startsWith('es')) {
+                selectedLang = 'es';
+            }
+            
+            // Set the language selector and update the page
+            document.getElementById('languageSelect').value = selectedLang;
+            changeLanguage();
+        });
+    </script>
+</body>
+</html>
